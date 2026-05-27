@@ -1,0 +1,145 @@
+{
+  "info": {
+    "name": "Booking QA - JSONPlaceholder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET - Obtener todos los posts",
+      "request": {
+        "method": "GET",
+        "url": "https://jsonplaceholder.typicode.com/posts"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+            "pm.test('Es un array', function () { pm.expect(pm.response.json()).to.be.an('array'); });",
+            "pm.test('Hay 100 posts', function () { pm.expect(pm.response.json().length).to.equal(100); });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "GET - Obtener post por ID",
+      "request": {
+        "method": "GET",
+        "url": "https://jsonplaceholder.typicode.com/posts/1"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+            "pm.test('Es un objeto', function () { pm.expect(pm.response.json()).to.be.an('object'); });",
+            "pm.test('ID es 1', function () { pm.expect(pm.response.json().id).to.equal(1); });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "POST - Crear nuevo post",
+      "request": {
+        "method": "POST",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userId\": 1, \"title\": \"QA Junior - Test de creacion\", \"body\": \"Post creado por test automatizado\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 201 Created', function () { pm.response.to.have.status(201); });",
+            "pm.test('Titulo correcto', function () { pm.expect(pm.response.json().title).to.equal('QA Junior - Test de creacion'); });",
+            "pm.test('Tiene ID', function () { pm.expect(pm.response.json().id).to.exist; });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "PUT - Actualizar post",
+      "request": {
+        "method": "PUT",
+        "url": "https://jsonplaceholder.typicode.com/posts/1",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userId\": 1, \"id\": 1, \"title\": \"QA Junior - Post ACTUALIZADO\", \"body\": \"Post actualizado por test\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+            "pm.test('Titulo actualizado', function () { pm.expect(pm.response.json().title).to.equal('QA Junior - Post ACTUALIZADO'); });",
+            "pm.test('Tiene propiedades', function () { pm.expect(pm.response.json()).to.have.property('id'); });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "DELETE - Eliminar post",
+      "request": {
+        "method": "DELETE",
+        "url": "https://jsonplaceholder.typicode.com/posts/1"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+            "pm.test('Respuesta vacia', function () { pm.expect(Object.keys(pm.response.json()).length).to.equal(0); });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "GET - Post inexistente (404)",
+      "request": {
+        "method": "GET",
+        "url": "https://jsonplaceholder.typicode.com/posts/99999"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 404 Not Found', function () { pm.response.to.have.status(404); });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "POST - Crear post sin body (negativo)",
+      "request": {
+        "method": "POST",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 201 Created', function () { pm.response.to.have.status(201); });",
+            "pm.test('Sin titulo', function () { pm.expect(pm.response.json().title).to.be.undefined; });",
+            "pm.test('Tiempo menor 2000ms', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });"
+          ]
+        }
+      }]
+    }
+  ]
+}

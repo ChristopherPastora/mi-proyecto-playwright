@@ -1,0 +1,18 @@
+{
+    "id": "08c169cc-c3b5-4fb4-bcc8-553f96aafd27",
+    "name": "QA Environment",
+    "values": [
+        {
+            "key": "base_url",
+            "value": "https://jsonplaceholder.typicode.com",
+            "type": "default",
+            "enabled": true
+        },
+        {
+            "key": "userId",
+            "value": "",
+            "type": "any",
+            "enabled": true
+        }
+    ]
+}
