@@ -33,9 +33,9 @@ export class HomePage {
 
     // Campo de búsqueda de destino
     // getByPlaceholder → busca el input por su texto de placeholder
-    this.searchDestination = page.getByPlaceholder('¿A dónde vas?').or(
-      page.getByPlaceholder('Where are you going?')
-    );
+    this.searchDestination = page.getByRole('combobox', { name: '¿Adónde vas?' }).or(
+  page.getByRole('combobox', { name: 'Where are you going?' })
+);
 
     // Botón principal de búsqueda
     // getByRole('button') → busca por rol semántico de botón
@@ -85,15 +85,20 @@ export class HomePage {
 
   // Cerrar el popup de cookies que aparece al entrar
   async closeCookiePopup() {
-    try {
-      // Esperar máximo 5 segundos a que aparezca el botón de cookies
-      const acceptCookies = this.page.getByRole('button', { name: /aceptar|accept/i });
-      await acceptCookies.click({ timeout: 5000 });
-    } catch {
-      // Si no aparece el popup, continuar normalmente
-      console.log('No apareció popup de cookies');
-    }
+  try {
+    const acceptCookies = this.page.getByRole('button', { name: /aceptar|accept/i });
+    await acceptCookies.click({ timeout: 5000 });
+  } catch {
+    console.log('No apareció popup de cookies');
   }
+
+  try {
+    const ignorarBtn = this.page.getByRole('button', { name: /ignorar/i });
+    await ignorarBtn.click({ timeout: 5000 });
+  } catch {
+    console.log('No apareció modal de ignorar');
+  }
+}
 
   // Buscar un destino completo
   // Parámetros: destino, fechaEntrada, fechaSalida

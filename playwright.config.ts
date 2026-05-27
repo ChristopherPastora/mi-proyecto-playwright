@@ -86,7 +86,7 @@ export default defineConfig({
     // ── Mobile Chrome (simula un celular Android)
     {
       name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
+      use: { ...devices['Pixel 10 pro XL'] },
     },
   ],
 });
